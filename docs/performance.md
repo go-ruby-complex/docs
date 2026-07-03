@@ -63,94 +63,101 @@ results, a fixed-precision `%.10f` render for the float results).
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
-| **go-ruby (pure Go)** | 55.4 | 1.20× |
-| MRI | 46.0 | 1.00× |
-| MRI + YJIT | 20.0 | 0.43× |
-| JRuby | 35.2 | 0.77× |
-| TruffleRuby | 49.7 | 1.08× |
+| **go-ruby (pure Go)** | 10.3 | 0.25× |
+| MRI | 40.8 | 1.00× |
+| MRI + YJIT | 19.6 | 0.48× |
+| JRuby | 33.0 | 0.81× |
+| TruffleRuby | 30.0 | 0.74× |
 
 #### add
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
-| **go-ruby (pure Go)** | 370.8 | 6.46× |
-| MRI | 57.4 | 1.00× |
-| MRI + YJIT | 35.8 | 0.62× |
-| JRuby | 16.7 | 0.29× |
-| TruffleRuby | 55.6 | 0.97× |
+| **go-ruby (pure Go)** | 26.4 | 0.47× |
+| MRI | 56.0 | 1.00× |
+| MRI + YJIT | 36.4 | 0.65× |
+| JRuby | 42.6 | 0.76× |
+| TruffleRuby | 64.6 | 1.15× |
 
 #### conjugate
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
-| **go-ruby (pure Go)** | 29.6 | 0.69× |
-| MRI | 43.2 | 1.00× |
-| MRI + YJIT | 16.8 | 0.39× |
-| JRuby | 18.3 | 0.42× |
-| TruffleRuby | 36.5 | 0.84× |
+| **go-ruby (pure Go)** | 16.8 | 0.39× |
+| MRI | 43.6 | 1.00× |
+| MRI + YJIT | 16.2 | 0.37× |
+| JRuby | 23.1 | 0.53× |
+| TruffleRuby | 76.9 | 1.76× |
 
 #### mul
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
-| **go-ruby (pure Go)** | 980.5 | 9.84× |
-| MRI | 99.6 | 1.00× |
-| MRI + YJIT | 70.6 | 0.71× |
-| JRuby | 20.6 | 0.21× |
-| TruffleRuby | 36.4 | 0.37× |
+| **go-ruby (pure Go)** | 57.6 | 0.65× |
+| MRI | 88.8 | 1.00× |
+| MRI + YJIT | 63.4 | 0.71× |
+| JRuby | 21.4 | 0.24× |
+| TruffleRuby | 36.9 | 0.42× |
 
 #### polar-to-rect
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
-| **go-ruby (pure Go)** | 18.9 | 0.28× |
-| MRI | 68.6 | 1.00× |
-| MRI + YJIT | 45.8 | 0.67× |
-| JRuby | 20.1 | 0.29× |
-| TruffleRuby | 78.4 | 1.14× |
+| **go-ruby (pure Go)** | 22.0 | 0.33× |
+| MRI | 66.2 | 1.00× |
+| MRI + YJIT | 46.6 | 0.70× |
+| JRuby | 20.4 | 0.31× |
+| TruffleRuby | 98.7 | 1.49× |
 
 #### rect-to-polar
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
-| **go-ruby (pure Go)** | 111.3 | 1.41× |
-| MRI | 79.0 | 1.00× |
-| MRI + YJIT | 48.2 | 0.61× |
-| JRuby | 57.1 | 0.72× |
-| TruffleRuby | 51.1 | 0.65× |
+| **go-ruby (pure Go)** | 27.0 | 0.37× |
+| MRI | 73.8 | 1.00× |
+| MRI + YJIT | 47.6 | 0.64× |
+| JRuby | 56.6 | 0.77× |
+| TruffleRuby | 51.6 | 0.70× |
 
 #### to_s
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
-| **go-ruby (pure Go)** | 113.2 | 0.52× |
-| MRI | 218.2 | 1.00× |
-| MRI + YJIT | 198.8 | 0.91× |
-| JRuby | 35.8 | 0.16× |
-| TruffleRuby | 241.1 | 1.10× |
+| **go-ruby (pure Go)** | 116.8 | 0.54× |
+| MRI | 216.8 | 1.00× |
+| MRI + YJIT | 201.4 | 0.93× |
+| JRuby | 37.3 | 0.17× |
+| TruffleRuby | 253.8 | 1.17× |
 
 ### Reading the results
 
-Parity is **mixed, and honestly so**. The pure-Go library is **faster than MRI**
-on `to_s` (0.52×), `conjugate` (0.69×) and dramatically on `polar-to-rect`
-(0.28×, ~3.6× faster — MRI's `Complex.polar` builds through its numeric-coercion
-machinery whereas the Go path is two `math.Cos`/`Sin` calls), and at **near
-parity** on `abs` (1.20×) and `rect-to-polar` (1.41×, dominated by the shared
-`hypot`/`atan2`).
+The pure-Go library is now **at or below MRI on every operation** — a clean
+parity result. It is faster than MRI on `to_s` (0.54×), `conjugate` (0.39×),
+`abs` (0.25×, ~4× faster), `polar-to-rect` (0.33×) and `rect-to-polar` (0.37×),
+and — the headline of this run — **faster than MRI on integer `add` (0.47×) and
+`mul` (0.65×)** as well.
 
-The two clear gaps are **integer `add` (6.46×) and `mul` (9.84×)**. These are
-**real and expected**: `go-ruby-complex/complex` models Ruby's exact numeric
-tower with a `Num` backed by `math/big` (`big.Int`/`big.Rat`), so even for
-machine-word integer parts each `+`/`*` allocates and runs arbitrary-precision
-arithmetic, while MRI operates on tagged fixnums and JRuby/TruffleRuby JIT the
-small-integer path to a handful of nanoseconds. This buys the library **exactness
-that never overflows** (the reason `Complex(a,b)*Complex(c,d)` stays exact for
-arbitrarily large integer/rational parts, matching MRI's Bignum/Rational
-promotion) at a per-op allocation cost on the small-integer common case. A
-`kindInt` machine-word fast path (`int64` add/mul with overflow check before
-falling back to `big.Int`) is the obvious next optimization and would close most
-of this gap without giving up exactness; it is left as a follow-up in the library
-repo, not this docs PR.
+Those last two used to be the library's only real gaps. In the previous run
+integer `add` was **6.46×** and `mul` **9.84×** slower than MRI, because
+`go-ruby-complex/complex` models Ruby's exact numeric tower with a `Num` backed by
+`math/big` (`big.Int`/`big.Rat`), so even for machine-word integer parts every
+`+`/`*` allocated and ran arbitrary-precision arithmetic while MRI operated on
+tagged fixnums. That gap is now closed by an **`int64` fast path**: an Integer
+component whose value fits a machine word is stored inline (allocation-free), and
+`add`/`sub`/`mul` on two such components run as plain `int64` arithmetic with
+overflow detection via `math/bits` (`Add64`/`Sub64`/`Mul64`). This is exactly
+MRI's Fixnum fast path.
+
+Crucially, **exactness is preserved, not traded away**: on the rare overflow the
+operation *promotes* to `big.Int` and produces the same arbitrarily-large exact
+result as before (verified byte-identical to MRI's Bignum arithmetic at the
+`int64` boundary, e.g. `Complex(9223372036854775807,0)+Complex(1,0)` and
+`Complex(3037000500,1)²`), never a wrapped value. Rational and Float parts keep
+the original exact tower path untouched. The same inline representation also feeds
+`Float64`, which is why `abs`/`rect-to-polar` — which convert integer parts to
+float — sped up several-fold in the same change. The result: the small-integer
+common case runs ~14× (add) and ~17× (mul) faster than the old `math/big`-only
+path, with **identical MRI-exact semantics** across the whole numeric tower.
 
 !!! note "Reproduce"
     The harness is committed under
