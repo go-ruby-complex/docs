@@ -1,3 +1,6 @@
 /site/
 .venv/
 __pycache__/
+
+# built benchmark binary (do not commit build artifacts)
+/benchmarks/go/bench
