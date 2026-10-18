@@ -1,4 +1,9 @@
-# Roadmap
+---
+title: "Roadmap"
+weight: 40
+---
+
+# Roadmap {#roadmap}
 
 `go-ruby-complex/complex` is grown **test-first**, each capability differential-tested against
 MRI rather than built in isolation. Ruby's Complex — the deterministic,
@@ -13,7 +18,7 @@ interpreter-independent slice extracted from rbgo's internals — is **complete*
 | Conversions & rendering | `ToF` / `ToI` / `ToR` / `ToC`, `Numerator` / `Denominator`, and MRI-exact `Inspect` / `ToS`. | **Done** |
 | Differential oracle & coverage | A wide corpus dumped through this library and the system `ruby` / `Complex`, compared byte-for-byte; 100% coverage, gofmt + go vet clean, green across all six 64-bit Go arches and three OSes. | **Done** |
 
-## Documented out-of-scope boundaries
+## Documented out-of-scope boundaries {#documented-out-of-scope-boundaries}
 
 These are **deliberate**, recorded so the module's surface is unambiguous:
 
@@ -21,5 +26,5 @@ These are **deliberate**, recorded so the module's surface is unambiguous:
 - **Reference is reference Ruby (MRI).** Byte-for-byte conformance targets MRI's `Complex`. The handful of intrinsically-floating results (`Polar`, polar `Parse`, non-integer `Pow`) can differ by a ULP because Go's pure-Go `math` is not the platform `libm` MRI links; those cases are verified under a tolerance.
 - **Standalone & reusable.** The module has no dependency on the Ruby runtime; the dependency runs the other way.
 
-See [Usage & API](api.md) for the surface and [Why pure Go](why.md) for the
+See [Usage & API]({{< relref "api.md" >}}) for the surface and [Why pure Go]({{< relref "why.md" >}}) for the
 deterministic/interpreter split.

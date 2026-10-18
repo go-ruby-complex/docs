@@ -1,4 +1,9 @@
-# go-ruby-complex documentation
+---
+title: "Home"
+weight: 10
+---
+
+# go-ruby-complex documentation {#go-ruby-complex-documentation}
 
 **Ruby's Complex number in pure Go — exact on the numeric tower, MRI byte-exact, no cgo.**
 
@@ -12,10 +17,13 @@ bound into [go-embedded-ruby](https://github.com/go-embedded-ruby/ruby) by `rbgo
 as a native module — a sibling of [go-ruby-rational](https://github.com/go-ruby-rational/rational) and [go-ruby-regexp](https://github.com/go-ruby-regexp/regexp). The dependency runs the other
 way: this library has **no dependency on the Ruby runtime**.
 
-!!! success "Status: complete — MRI byte-exact"
-    A wide corpus of constructors, arithmetic, conversions and string parses built here and compared byte-for-byte against the system `ruby`'s `inspect` / `to_s`; 100% coverage, gofmt + go vet clean, green across all six 64-bit Go arches and three OSes.
+{{< callout type="info" >}}
+**Status: complete — MRI byte-exact**
 
-## Quick taste
+A wide corpus of constructors, arithmetic, conversions and string parses built here and compared byte-for-byte against the system `ruby`'s `inspect` / `to_s`; 100% coverage, gofmt + go vet clean, green across all six 64-bit Go arches and three OSes.
+{{< /callout >}}
+
+## Quick taste {#quick-taste}
 
 ```go
 a := complex.New(complex.IntFromInt64(1), complex.IntFromInt64(2))
@@ -34,7 +42,7 @@ c, _ := complex.Parse("1+2i")
 fmt.Println(c.Inspect())        // (1+2i)
 ```
 
-## Repositories
+## Repositories {#repositories}
 
 | Repo | What it is |
 | --- | --- |
@@ -43,7 +51,7 @@ fmt.Println(c.Inspect())        // (1+2i)
 | [`go-ruby-complex.github.io`](https://github.com/go-ruby-complex/go-ruby-complex.github.io) | the organization landing page (Hugo) |
 | [`brand`](https://github.com/go-ruby-complex/brand) | logo and brand assets |
 
-## Principles
+## Principles {#principles}
 
 - **Pure Go, `CGO_ENABLED=0`** — trivial cross-compilation, a single static
   binary, no C toolchain.
@@ -53,11 +61,11 @@ fmt.Println(c.Inspect())        // (1+2i)
   the Ruby runtime — the dependency runs the other way.
 - **100% test coverage** is the target, enforced as a CI gate.
 
-## Where to go next
+## Where to go next {#where-to-go-next}
 
-- [Why pure Go](why.md) — why this slice of Ruby is deterministic enough to live
+- [Why pure Go]({{< relref "why.md" >}}) — why this slice of Ruby is deterministic enough to live
   as a standalone, interpreter-independent Go library.
-- [Usage & API](api.md) — the public surface and worked examples.
-- [Roadmap](roadmap.md) — what is done and what is downstream by design.
+- [Usage & API]({{< relref "api.md" >}}) — the public surface and worked examples.
+- [Roadmap]({{< relref "roadmap.md" >}}) — what is done and what is downstream by design.
 
 Source lives at [github.com/go-ruby-complex/complex](https://github.com/go-ruby-complex/complex).

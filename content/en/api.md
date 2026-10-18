@@ -1,18 +1,26 @@
-# Usage & API
+---
+title: "Usage & API"
+weight: 30
+---
+
+# Usage & API {#usage-api}
 
 The public API lives at the module root (`github.com/go-ruby-complex/complex`). It is **Ruby-shaped but Go-idiomatic**: the methods mirror Ruby's `Complex` (`inspect`, `to_s`, `abs`, `arg`, `conjugate`, …) while the surface follows Go conventions — value types, explicit `error`, no global state.
 
-!!! success "Status: implemented"
-    The library is built and importable as `github.com/go-ruby-complex/complex`, bound into
-    `rbgo` as a native module; see [Roadmap](roadmap.md).
+{{< callout type="info" >}}
+**Status: implemented**
 
-## Install
+The library is built and importable as `github.com/go-ruby-complex/complex`, bound into
+`rbgo` as a native module; see [Roadmap]({{< relref "roadmap.md" >}}).
+{{< /callout >}}
+
+## Install {#install}
 
 ```sh
 go get github.com/go-ruby-complex/complex
 ```
 
-## Worked example
+## Worked example {#worked-example}
 
 ```go
 a := complex.New(complex.IntFromInt64(1), complex.IntFromInt64(2))
@@ -31,7 +39,7 @@ c, _ := complex.Parse("1+2i")
 fmt.Println(c.Inspect())        // (1+2i)
 ```
 
-## Shape
+## Shape {#shape}
 
 ```go
 // Construction
@@ -75,7 +83,7 @@ func (c *Complex) Inspect() string       // "(1+2i)"
 func (c *Complex) ToS() string           // "1+2i"
 ```
 
-## MRI conformance
+## MRI conformance {#mri-conformance}
 
 Correctness is defined by reference Ruby. A **differential oracle** runs a wide
 corpus through both the system `ruby` and this library and compares the results
@@ -83,7 +91,7 @@ corpus through both the system `ruby` and this library and compares the results
 themselves where `ruby` is not on `PATH` (e.g. the qemu arch lanes), so the
 cross-arch builds still validate the library.
 
-## Relationship to Ruby
+## Relationship to Ruby {#relationship-to-ruby}
 
 `go-ruby-complex/complex` is **standalone and reusable**, and is the backend bound into
 [go-embedded-ruby](https://github.com/go-embedded-ruby/ruby) by `rbgo` as a
