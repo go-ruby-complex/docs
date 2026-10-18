@@ -1,4 +1,9 @@
-# Performance
+---
+title: "Performance"
+weight: 50
+---
+
+# Performance {#performance}
 
 `go-ruby-complex/complex` is the pure-Go library that
 [`rbgo`](https://github.com/go-embedded-ruby/ruby) binds for Ruby's `complex`. This
@@ -6,7 +11,7 @@ page records the **methodology** of the ecosystem-wide per-module parity suite �
 how this module is benchmarked against the reference Ruby runtimes — without
 quoting numbers here, so the figures never drift out of date.
 
-## What is measured
+## What is measured {#what-is-measured}
 
 The **same** Ruby script — an arithmetic + render workload over `Complex` values (constructors, exact `Mul` / `Pow`, `abs` / `arg`, and `inspect` / `to_s`) — is run under every runtime.
 `rbgo`'s number reflects **this pure-Go library doing the work**; every other
@@ -15,7 +20,7 @@ comparison is the **Ruby-visible operation**, apples-to-apples across
 interpreters. The script prints a deterministic checksum and its output is
 checked **byte-identical to MRI** before timing.
 
-## Method
+## Method {#method}
 
 - **Best-of-N wall time** (best, not mean, to suppress scheduler noise);
   single-shot processes, no warm-up beyond the script's own loop.
@@ -29,14 +34,17 @@ checked **byte-identical to MRI** before timing.
   (`complex.rb` + `run.sh`). Reproduce:
   `RBGO=./rbgo TRUFFLE=truffleruby bash bench/modules/run.sh 5`.
 
-!!! note "Honest framing"
-    No headline numbers are reproduced on this page on purpose: the parity suite
-    is the source of truth and is re-run per release. Rows that complete in well
-    under a couple hundred milliseconds carry the most relative noise; treat
-    their ratios as order-of-magnitude. The published figures are real measured
-    numbers — nothing is cherry-picked.
+{{< callout type="info" >}}
+**Honest framing**
 
-## Library-level benchmark (Go API vs runtimes) — 2026-07-03
+No headline numbers are reproduced on this page on purpose: the parity suite
+is the source of truth and is re-run per release. Rows that complete in well
+under a couple hundred milliseconds carry the most relative noise; treat
+their ratios as order-of-magnitude. The published figures are real measured
+numbers — nothing is cherry-picked.
+{{< /callout >}}
+
+## Library-level benchmark (Go API vs runtimes) — 2026-07-03 {#library-level-benchmark-go-api-vs-runtimes-2026-07-03}
 
 This section measures the **pure-Go library directly, through its Go API** — not
 the `rbgo` interpreter path described above. It isolates the library primitive
@@ -57,9 +65,9 @@ results, a fixed-precision `%.10f` render for the float results).
   MRI*. Interpreter start-up is outside the timed region, so these are operation
   costs, not `ruby file.rb` process costs.
 
-### Results (best of 25, ns/op)
+### Results (best of 25, ns/op) {#results-best-of-25-nsop}
 
-#### abs
+#### abs {#abs}
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
@@ -69,7 +77,7 @@ results, a fixed-precision `%.10f` render for the float results).
 | JRuby | 33.0 | 0.81× |
 | TruffleRuby | 30.0 | 0.74× |
 
-#### add
+#### add {#add}
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
@@ -79,7 +87,7 @@ results, a fixed-precision `%.10f` render for the float results).
 | JRuby | 42.6 | 0.76× |
 | TruffleRuby | 64.6 | 1.15× |
 
-#### conjugate
+#### conjugate {#conjugate}
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
@@ -89,7 +97,7 @@ results, a fixed-precision `%.10f` render for the float results).
 | JRuby | 23.1 | 0.53× |
 | TruffleRuby | 76.9 | 1.76× |
 
-#### mul
+#### mul {#mul}
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
@@ -99,7 +107,7 @@ results, a fixed-precision `%.10f` render for the float results).
 | JRuby | 21.4 | 0.24× |
 | TruffleRuby | 36.9 | 0.42× |
 
-#### polar-to-rect
+#### polar-to-rect {#polar-to-rect}
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
@@ -109,7 +117,7 @@ results, a fixed-precision `%.10f` render for the float results).
 | JRuby | 20.4 | 0.31× |
 | TruffleRuby | 98.7 | 1.49× |
 
-#### rect-to-polar
+#### rect-to-polar {#rect-to-polar}
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
@@ -119,7 +127,7 @@ results, a fixed-precision `%.10f` render for the float results).
 | JRuby | 56.6 | 0.77× |
 | TruffleRuby | 51.6 | 0.70× |
 
-#### to_s
+#### to_s {#to_s}
 
 | Runtime | ns/op | vs MRI |
 | --- | ---: | ---: |
@@ -129,7 +137,7 @@ results, a fixed-precision `%.10f` render for the float results).
 | JRuby | 37.3 | 0.17× |
 | TruffleRuby | 253.8 | 1.17× |
 
-### Reading the results
+### Reading the results {#reading-the-results}
 
 The pure-Go library is now **at or below MRI on every operation** — a clean
 parity result. It is faster than MRI on `to_s` (0.54×), `conjugate` (0.39×),
@@ -159,23 +167,29 @@ float — sped up several-fold in the same change. The result: the small-integer
 common case runs ~14× (add) and ~17× (mul) faster than the old `math/big`-only
 path, with **identical MRI-exact semantics** across the whole numeric tower.
 
-!!! note "Reproduce"
-    The harness is committed under
-    [`benchmarks/`](https://github.com/go-ruby-complex/docs/tree/main/benchmarks):
-    a self-contained Go driver (`go/`, pins the published library via `go.mod`),
-    the equivalent `ruby/complex.rb` workload, and `run.sh`. Run
-    `bash benchmarks/run.sh`; env `OUTER`/`WARM` tune the pass budget and
-    `RUBY`/`JRUBY`/`TRUFFLERUBY` select the runtime binaries. `run.sh` re-verifies
-    every runtime against MRI before timing and aborts on any disagreement.
+{{< callout type="info" >}}
+**Reproduce**
 
-!!! warning "Warm-up budget & noise — honest framing"
-    Numbers reflect a **fixed warm-process budget** (3 warm-up + 25 timed passes
-    in one process). The JVM/GraalVM JITs (JRuby, TruffleRuby) may need a larger
-    warm-up to reach steady state, so their columns can shift between runs — most
-    visibly TruffleRuby on the shortest loops. Every operation here settles in
-    tens to hundreds of nanoseconds, so **all rows carry meaningful relative
-    noise**; treat sub-100 ns ratios as order-of-magnitude and the direction of
-    each gap (not its third digit) as the signal. Every number is a **real
-    measured value** from the dated run above — nothing is fabricated, estimated,
-    or cherry-picked. The go-ruby column is the pure-Go library; every other
-    column is that interpreter's own core `Complex` doing the equivalent work.
+The harness is committed under
+[`benchmarks/`](https://github.com/go-ruby-complex/docs/tree/main/benchmarks):
+a self-contained Go driver (`go/`, pins the published library via `go.mod`),
+the equivalent `ruby/complex.rb` workload, and `run.sh`. Run
+`bash benchmarks/run.sh`; env `OUTER`/`WARM` tune the pass budget and
+`RUBY`/`JRUBY`/`TRUFFLERUBY` select the runtime binaries. `run.sh` re-verifies
+every runtime against MRI before timing and aborts on any disagreement.
+{{< /callout >}}
+
+{{< callout type="warning" >}}
+**Warm-up budget & noise — honest framing**
+
+Numbers reflect a **fixed warm-process budget** (3 warm-up + 25 timed passes
+in one process). The JVM/GraalVM JITs (JRuby, TruffleRuby) may need a larger
+warm-up to reach steady state, so their columns can shift between runs — most
+visibly TruffleRuby on the shortest loops. Every operation here settles in
+tens to hundreds of nanoseconds, so **all rows carry meaningful relative
+noise**; treat sub-100 ns ratios as order-of-magnitude and the direction of
+each gap (not its third digit) as the signal. Every number is a **real
+measured value** from the dated run above — nothing is fabricated, estimated,
+or cherry-picked. The go-ruby column is the pure-Go library; every other
+column is that interpreter's own core `Complex` doing the equivalent work.
+{{< /callout >}}
