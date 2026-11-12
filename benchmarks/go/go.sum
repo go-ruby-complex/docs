@@ -2,3 +2,5 @@ github.com/go-ruby-complex/complex v0.0.0-20260629153304-ebcd523ce6cf h1:3BUpAnv
 github.com/go-ruby-complex/complex v0.0.0-20260629153304-ebcd523ce6cf/go.mod h1:SlQrQ0OgZRrWi2slZEzjUOPqt09g7NvBmTFXfJRZigY=
 github.com/go-ruby-complex/complex v0.0.0-20260717063207-ad262f45ef90 h1:+7S3XskOZttL/zoFHFkMa13l9Z4IK30Am6OXjS6seDo=
 github.com/go-ruby-complex/complex v0.0.0-20260717063207-ad262f45ef90/go.mod h1:SlQrQ0OgZRrWi2slZEzjUOPqt09g7NvBmTFXfJRZigY=
+github.com/go-ruby-complex/complex v0.0.0-20261112123029-0e4791fa26d4 h1:G11wGqA7QKVJDM9ArOrbHjQy3pbrKvtiKRk8LuVE6no=
+github.com/go-ruby-complex/complex v0.0.0-20261112123029-0e4791fa26d4/go.mod h1:LAfGnBibGWZNBhnjVmLvR3NtzNRnJ/LO9j6983LDnE4=
